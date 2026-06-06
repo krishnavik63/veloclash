@@ -180,6 +180,34 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .fb-input{width:100%;background:var(--s1);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:var(--mono);padding:10px 12px;outline:none;margin-bottom:8px;resize:vertical;min-height:80px;}
 .fb-input:focus{border-color:var(--cyan);}
 </style>
+<link rel="manifest" href="data:application/json,{
+  %22name%22:%22VeloClash%22,
+  %22short_name%22:%22VeloClash%22,
+  %22description%22:%22Cycle. Claim. Conquer.%22,
+  %22start_url%22:%22/%22,
+  %22display%22:%22standalone%22,
+  %22background_color%22:%22%230a0a0a%22,
+  %22theme_color%22:%2200e5ff%22,
+  %22orientation%22:%22portrait%22,
+  %22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230a0a0a'/%3E%3Ctext x='256' y='340' font-size='280' text-anchor='middle' fill='%2300e5ff' font-family='Arial Black'%3E🚴%3C/text%3E%3C/svg%3E%22,%22sizes%22:%22512x512%22,%22type%22:%22image/svg+xml%22,%22purpose%22:%22any maskable%22}]
+}"/>
+<meta name="apple-mobile-web-app-title" content="VeloClash"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    const sw = `
+      const CACHE = 'veloclash-v1';
+      const ASSETS = ['/veloclash/'];
+      self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS))));
+      self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match('/veloclash/')))));
+    `;
+    const blob = new Blob([sw], {type:'application/javascript'});
+    const url = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(url).then(() => console.log('SW registered'));
+  });
+}
+</script>
 </head>
 <body>
 
